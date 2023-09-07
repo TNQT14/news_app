@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:news_app/articles_widget.dart';
+import 'package:news_app/widget/articles_widget.dart';
+import 'package:news_app/provider/news_provider.dart';
+import 'package:news_app/widget/empty_screen.dart';
+import 'package:provider/provider.dart';
 
 class HomeTabPage extends StatefulWidget {
   const HomeTabPage({super.key});
@@ -13,7 +16,8 @@ class HomeTabPage extends StatefulWidget {
 class _HomeTabPageState extends State<HomeTabPage> {
   @override
   Widget build(BuildContext context) {
-
+    String sortBy = " ";
+    final newProvider = Provider.of<NewsProvider>(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -37,26 +41,54 @@ class _HomeTabPageState extends State<HomeTabPage> {
               ))
         ],
       ),
-      body: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text("All News",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text("All News",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600
+                  ),
+                  ),
                 ),
+                IconButton(onPressed: (){},
+                    icon: Icon(IconlyLight.filter),
                 ),
-              ),
-              IconButton(onPressed: (){},
-                  icon: Icon(IconlyLight.filter),
-              ),
-            ],
-          ),
-          ArticlesWidget(),
-        ],
+              ],
+            ),
+            SizedBox(height: 24,),
+            FutureBuilder(
+              future: newProvider.fetchAllNews(sortBy: sortBy),
+              builder: (context, snapshot){
+                if(snapshot.connectionState == ConnectionState.waiting){
+                  return const CircularProgressIndicator();
+                }
+                return
+                    // EmptyScreen();
+                  Expanded(
+                  child: ListView.builder(
+                      itemCount: 5,
+                      itemBuilder: (context,index){
+                        return ArticlesWidget();
+                      }),
+                );
+              },
+            )
+            // Expanded(
+            //   child: ListView.builder(
+            //       itemCount: 5,
+            //       itemBuilder: (context,index){
+            //         return ArticlesWidget();
+            //   }),
+            // )
+          ],
+        ),
       ),
     );
   }
 }
+
