@@ -13,6 +13,7 @@ class NewsWebViewPage extends StatefulWidget {
 }
 
 class _NewsWebViewPageState extends State<NewsWebViewPage> {
+  late WebViewController _webViewController;
   double _progress = 0.0;
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class _NewsWebViewPageState extends State<NewsWebViewPage> {
           IconButton(
             icon: const Icon(Icons.more_horiz),
             onPressed: (){
-
+              _showWebViewButtonSheet();
             },
           ),
         ],
@@ -50,9 +51,59 @@ class _NewsWebViewPageState extends State<NewsWebViewPage> {
             onProgress: (value){
               _progress = value/100;
             },
+            onWebViewCreated: (controller){
+              _webViewController = controller;
+            },
           )),
         ],
       )
     );
+  }
+
+  Future<void> _showWebViewButtonSheet() async {
+    await showModalBottomSheet(context:context, builder:(context){
+      return  Column(
+        mainAxisSize: MainAxisSize.min,
+          children: [
+            Center(
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 28),
+                height: 5,
+                width: 35,
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+            ),
+            const Text("More option", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20, height: 29/22),),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Divider(thickness: 2,),
+            ),
+            ListTile(
+              leading: const Icon(Icons.share),
+              title: const Text("Share"),
+              onTap: (){
+
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.open_in_browser),
+              title: const Text("Open in browser"),
+              onTap: (){
+
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.refresh),
+              title: const Text("Refresh"),
+              onTap: (){
+
+              },
+            ),
+          ],
+      );
+    });
   }
 }
