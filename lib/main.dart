@@ -1,21 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/page/home_page.dart';
 import 'package:news_app/provider/news_provider.dart';
+import 'package:news_app/provider/theme_povider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
 
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeChangeProvider = ThemeProvider();
+
+    //Fetch the current theme
+    void getCurrentAppTheme() async {
+      themeChangeProvider.setDarkTheme =
+      await themeChangeProvider.darkThemePreferences.getTheme();
+    }
+
+    @override
+    void didChangeDependencies() {
+      getCurrentAppTheme();
+      super.didChangeDependencies();
+    }
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => NewsProvider())
+        ChangeNotifierProvider(create: (_) {
+          //Notify about theme changes
+          return themeChangeProvider;
+        }),
+        ChangeNotifierProvider(
+          create: (_) => NewsProvider(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
