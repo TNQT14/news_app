@@ -1,5 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:news_app/services/global_methods.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../Utility/utils.dart';
@@ -18,45 +23,54 @@ class _NewsWebViewPageState extends State<NewsWebViewPage> {
   @override
   Widget build(BuildContext context) {
     final Color color = Utils(context).getColor;
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(IconlyLight.arrowLeft2),
-          onPressed: (){
-            Navigator.pop(context);
-          },
-        ),
-            title: Text(widget.url, style: TextStyle(color: color),),
-        centerTitle: true,
-        elevation: 0,
-          actions: [
-          IconButton(
-            icon: const Icon(Icons.more_horiz),
+    return WillPopScope(
+      onWillPop: () async{
+        if(await _webViewController.canGoBack()){
+          _webViewController.goBack();
+          return false;
+        }
+        else return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(IconlyLight.arrowLeft2),
             onPressed: (){
-              _showWebViewButtonSheet();
+              Navigator.pop(context);
             },
           ),
-        ],
+              title: Text(widget.url, style: TextStyle(color: color),),
+          centerTitle: true,
+          elevation: 0,
+            actions: [
+            IconButton(
+              icon: const Icon(Icons.more_horiz),
+              onPressed: (){
+                _showWebViewButtonSheet();
+              },
+            ),
+          ],
+        ),
+        body: Column(
+          children: [
+            LinearProgressIndicator(
+              value: _progress,
+              color: _progress == 1 ? Colors.transparent:Colors.blue,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            ),
+            Expanded(child: WebView(
+              initialUrl: widget.url,
+              zoomEnabled: true,
+              onProgress: (value){
+                _progress = value/100;
+              },
+              onWebViewCreated: (controller){
+                _webViewController = controller;
+              },
+            )),
+          ],
+        )
       ),
-      body: Column(
-        children: [
-          LinearProgressIndicator(
-            value: _progress,
-            color: _progress == 1 ? Colors.transparent:Colors.blue,
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          ),
-          Expanded(child: WebView(
-            initialUrl: widget.url,
-            zoomEnabled: true,
-            onProgress: (value){
-              _progress = value/100;
-            },
-            onWebViewCreated: (controller){
-              _webViewController = controller;
-            },
-          )),
-        ],
-      )
     );
   }
 
@@ -84,22 +98,36 @@ class _NewsWebViewPageState extends State<NewsWebViewPage> {
             ListTile(
               leading: const Icon(Icons.share),
               title: const Text("Share"),
-              onTap: (){
-
+              onTap: ()async{
+                try{
+                  await Share.share(widget.url);
+                } catch (e){
+                  GlobalMethods.errorDialog(errorMessage: e.toString(), context: context);
+                }
               },
             ),
             ListTile(
               leading: const Icon(Icons.open_in_browser),
               title: const Text("Open in browser"),
-              onTap: (){
-
+              onTap: ()async{
+                if(!await launchUrl(Uri.parse(widget.url)))
+                  {
+                    throw "Could not launch ${widget.url}";
+                  }
+                Navigator.pop(context);
               },
             ),
             ListTile(
               leading: const Icon(Icons.refresh),
               title: const Text("Refresh"),
-              onTap: (){
-
+              onTap: () async {
+                try{
+                  await _webViewController.reload();
+                }catch (e){
+                  log("refresh Web view error:${e}");
+                }finally{
+                  Navigator.pop(context);
+                }
               },
             ),
           ],
