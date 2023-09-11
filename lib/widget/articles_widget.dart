@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/Utility/utils.dart';
 import 'package:news_app/consts/styles.dart';
+import 'package:news_app/models/news_model.dart';
+import 'package:news_app/provider/news_provider.dart';
+import 'package:provider/provider.dart';
 
 class ArticlesWidget extends StatelessWidget {
   const ArticlesWidget({super.key});
@@ -8,6 +11,7 @@ class ArticlesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = Utils(context).getScreenSize;
+    NewsModel news = Provider.of<NewsModel>(context);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
@@ -38,7 +42,7 @@ class ArticlesWidget extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: Image.network(
-                          "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1gbICa.img?w=730&h=487&m=6&x=314&y=93&s=66&d=66",
+                        news.urlToImage,
                         height: size.height*0.12,
                         width: size.height*0.12,
                         fit: BoxFit.cover,
@@ -50,7 +54,7 @@ class ArticlesWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Điểm tin thể thao sáng 4-9: Neymar: 'Tôi và Messi sống như địa ngục' ở PSG",
+                          Text(news.title,
                           style: smallTextStyle,
                           textAlign: TextAlign.justify,
                             maxLines: 2,
@@ -63,7 +67,7 @@ class ArticlesWidget extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 const Icon(Icons.lock_clock),
-                                Text("less than one minutes",
+                                Text(news.readingTimeText,
                                   style: smallTextStyle,
                                 ),
                               ],
@@ -76,7 +80,7 @@ class ArticlesWidget extends StatelessWidget {
                                     icon: const Icon(Icons.link,
                                     color: Colors.blue,)
                                 ),
-                                Text("23/10/2023 ON 8:15",
+                                Text(news.dateToShow,
                                 style: smallTextStyle,),
                               ],
                             ),
