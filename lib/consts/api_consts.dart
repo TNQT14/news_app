@@ -5,9 +5,9 @@ String BASEURL_FIREBASE ="";
 
 String WEATHER_API = "";
 
-/// news api 
+/// news api
 /// key :  https://newsapi.org/
-/// url : 
+/// url :
 
 
 /// weather api

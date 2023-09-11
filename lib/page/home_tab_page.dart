@@ -3,8 +3,10 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app/widget/articles_widget.dart';
 import 'package:news_app/provider/news_provider.dart';
-import 'package:news_app/widget/empty_screen.dart';
 import 'package:provider/provider.dart';
+
+import '../consts/vars.dart';
+import '../widget/empty_screen.dart';
 
 class HomeTabPage extends StatefulWidget {
   const HomeTabPage({super.key});
@@ -16,7 +18,7 @@ class HomeTabPage extends StatefulWidget {
 class _HomeTabPageState extends State<HomeTabPage> {
   @override
   Widget build(BuildContext context) {
-    String sortBy = " ";
+    String sortBy = SortByEnum.publishedAt.name;
     final newProvider = Provider.of<NewsProvider>(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -63,21 +65,39 @@ class _HomeTabPageState extends State<HomeTabPage> {
             SizedBox(height: 24,),
             FutureBuilder(
               future: newProvider.fetchAllNews(sortBy: sortBy),
-              builder: (context, snapshot){
-                if(snapshot.connectionState == ConnectionState.waiting){
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
                 }
+                else if (snapshot.hasError) {
+                  return Expanded(
+                    child: EmptyNewsWidget(
+                      text: "an error occured ${snapshot.error}",
+                      imagePath: "assets/images/no_news.png",
+                    ),
+                  );
+                }
+                else if (snapshot.data == null) {
+                  return const Expanded(
+                    child: EmptyNewsWidget(
+                      text: "No news found",
+                      imagePath: "assets/images/no_news.png",
+                    ),
+                  );
+                }
                 return
-                    // EmptyScreen();
-                  Expanded(
+                Expanded(
                   child: ListView.builder(
-                      itemCount: 5,
-                      itemBuilder: (context,index){
-                        return ArticlesWidget();
+                      itemCount: snapshot.data?.length ?? 0,
+                      itemBuilder: (context, index) {
+                        return ChangeNotifierProvider.value(
+                          value: snapshot.data?[index],
+                          child: ArticlesWidget(),
+                        );
                       }),
                 );
               },
-            )
+            ),
             // Expanded(
             //   child: ListView.builder(
             //       itemCount: 5,

@@ -13,7 +13,7 @@ class NewsAPIService{
         "domains":"nypost.com",
         "sortBy":sortBy,
       });
-      var response = await http.get(uri,headers :{"X-Api_key": API_KEY});
+      var response = await http.get(uri,headers :{"X-Api-key": API_KEY});
       Map data = jsonDecode(response.body);
       List newTempList = [];
       if(data['code']!= null)

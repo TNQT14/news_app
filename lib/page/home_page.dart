@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void didChangeDependencies() {
     tabsScreen.addAll([
-    HomeTabPage(),
+    const HomeTabPage(),
     Container(),
     Container(),
     Container(),
@@ -38,9 +38,13 @@ class _HomePageState extends State<HomePage> {
         children: tabsScreen,
       ),
       bottomNavigationBar: BottomNavigationBar(
-        // onTap:(){
-        //
-        // },
+        onTap: (index) {
+          if (index != currentIndex) {
+            setState(() {
+              currentIndex = index;
+            });
+          }
+        },
         currentIndex: currentIndex,
         type: BottomNavigationBarType.fixed,
         fixedColor: Colors.blue,
