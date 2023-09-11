@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:news_app/Utility/utils.dart';
 import 'package:news_app/consts/styles.dart';
 import 'package:news_app/models/news_model.dart';
+import 'package:news_app/page/page_news_webview.dart';
 import 'package:news_app/provider/news_provider.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 class ArticlesWidget extends StatelessWidget {
@@ -76,7 +78,11 @@ class ArticlesWidget extends StatelessWidget {
                           FittedBox(
                             child: Row(
                               children: [
-                                IconButton(onPressed: (){},
+                                IconButton(onPressed: (){
+                                  Navigator.push(context, PageTransition(
+                                      child: NewsWebViewPage(url: news.url),
+                                      type: PageTransitionType.rightToLeft,));
+                                },
                                     icon: const Icon(Icons.link,
                                     color: Colors.blue,)
                                 ),
