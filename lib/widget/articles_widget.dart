@@ -7,6 +7,8 @@ import 'package:news_app/provider/news_provider.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
+import '../page/news_detail_page.dart';
+
 class ArticlesWidget extends StatelessWidget {
   const ArticlesWidget({super.key});
 
@@ -17,7 +19,9 @@ class ArticlesWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
-        onTap: (){},
+        onTap: (){
+            Navigator.pushNamed(context, NewDetailPage.routeName);
+        },
         child: Stack(
           children: [
             Container(

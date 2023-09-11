@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/page/home_page.dart';
+import 'package:news_app/page/news_detail_page.dart';
 import 'package:news_app/provider/news_provider.dart';
 import 'package:news_app/provider/theme_povider.dart';
 import 'package:provider/provider.dart';
@@ -63,6 +64,9 @@ class _MyAppState extends State<MyApp> {
           useMaterial3: true,
         ),
         home: const HomePage(),
+        routes: {
+          NewDetailPage.routeName: (context) => const NewDetailPage(),
+        },
       ),
     );
   }
