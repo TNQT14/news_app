@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../consts/vars.dart';
 import '../widget/empty_screen.dart';
+import '../widget/loading_widget.dart';
 
 class HomeTabPage extends StatefulWidget {
   const HomeTabPage({super.key});
@@ -16,6 +17,7 @@ class HomeTabPage extends StatefulWidget {
 }
 
 class _HomeTabPageState extends State<HomeTabPage> {
+  var newsType = NewsType.allNews;
   @override
   Widget build(BuildContext context) {
     String sortBy = SortByEnum.publishedAt.name;
@@ -67,7 +69,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
               future: newProvider.fetchAllNews(sortBy: sortBy),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
+                  return LoadingWidget(newsType: newsType);
                 }
                 else if (snapshot.hasError) {
                   return Expanded(

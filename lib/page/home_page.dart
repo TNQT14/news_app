@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:news_app/page/home_tab_page.dart';
 
+import 'explore_page.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -24,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   void didChangeDependencies() {
     tabsScreen.addAll([
     const HomeTabPage(),
-    Container(),
+      const ExplorePage(),
     Container(),
     Container(),
     ]);

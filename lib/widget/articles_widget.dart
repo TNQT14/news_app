@@ -1,3 +1,4 @@
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/Utility/utils.dart';
 import 'package:news_app/consts/styles.dart';
@@ -45,13 +46,26 @@ class ArticlesWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(10),
                 child: Row(
                   children: [
+                    // ClipRRect(
+                    //   borderRadius: BorderRadius.circular(12),
+                    //   child: Image.network(
+                    //     news.urlToImage,
+                    //     height: size.height*0.12,
+                    //     width: size.height*0.12,
+                    //     fit: BoxFit.cover,
+                    //   ),
+                    // ),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        news.urlToImage,
-                        height: size.height*0.12,
-                        width: size.height*0.12,
-                        fit: BoxFit.cover,
+                      child: Hero(
+                        tag: news.publishedAt,
+                        child: FancyShimmerImage(
+                          imageUrl: news.urlToImage,
+                          boxFit: BoxFit.fill,
+                          height: size.height*0.12,
+                          width: size.height*0.12,
+                          errorWidget: Image.asset("assets/images/empty_image.png"),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 10,),
