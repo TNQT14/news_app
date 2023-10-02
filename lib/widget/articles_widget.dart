@@ -8,20 +8,34 @@ import 'package:news_app/provider/news_provider.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
+import '../models/bookmarks_model.dart';
 import '../page/news_detail_page.dart';
 
 class ArticlesWidget extends StatelessWidget {
-  const ArticlesWidget({super.key});
+  const ArticlesWidget({
+    Key? key,
+    this.isBookmark = false,
+    this.isTrending = false,
+  }) : super(key: key);
+
+  final bool isBookmark;
+  final bool isTrending;
+
 
   @override
   Widget build(BuildContext context) {
     Size size = Utils(context).getScreenSize;
     NewsModel news = Provider.of<NewsModel>(context);
+    dynamic newsModelProvider = isBookmark ? Provider.of<BookmarksModel>(context) : Provider.of<NewsModel>(context);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
         onTap: (){
-            Navigator.pushNamed(context, NewDetailPage.routeName);
+          print("On tap");
+            Navigator.pushNamed(context, NewDetailPage.routeName, arguments:{
+              "isTrending": false,
+              "publishedAt": newsModelProvider.publishedAt,
+            });
         },
         child: Stack(
           children: [

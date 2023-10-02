@@ -22,4 +22,10 @@ class NewsProvider with ChangeNotifier{
     return _trendingList;
   }
 
+  NewsModel findByDate({required String? publishedAt})  {
+    var combineList = _trendingList + _newsList;
+    return  combineList
+        .firstWhere((newsModel) => newsModel.publishedAt == publishedAt,orElse: () => _newsList[0]);
+  }
+
 }

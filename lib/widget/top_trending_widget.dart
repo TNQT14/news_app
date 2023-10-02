@@ -28,7 +28,7 @@ class _TopTrendingWidgetState extends State<TopTrendingWidget> {
       color: Theme.of(context).cardColor,
       child: InkWell(
         onTap:  (){
-          Navigator.pushNamed(context, NewDetailPage.routeName);
+          // Navigator.pushNamed(context, NewDetailPage.routeName);
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

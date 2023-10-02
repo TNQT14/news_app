@@ -1,3 +1,4 @@
+import 'package:news_app/core.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/page/home_page.dart';
 import 'package:news_app/page/news_detail_page.dart';
@@ -44,6 +45,7 @@ class _MyAppState extends State<MyApp> {
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
+navigatorKey: Get.navigatorKey,
         theme: ThemeData(
           // This is the theme of your application.
           //
