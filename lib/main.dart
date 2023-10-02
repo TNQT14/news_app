@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
-navigatorKey: Get.navigatorKey,
+        navigatorKey: Get.navigatorKey,
         theme: ThemeData(
           // This is the theme of your application.
           //

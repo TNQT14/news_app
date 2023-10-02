@@ -26,16 +26,13 @@ class ArticlesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = Utils(context).getScreenSize;
     NewsModel news = Provider.of<NewsModel>(context);
-    dynamic newsModelProvider = isBookmark ? Provider.of<BookmarksModel>(context) : Provider.of<NewsModel>(context);
+    // dynamic newsModelProvider = isBookmark ? Provider.of<BookmarksModel>(context) : Provider.of<NewsModel>(context);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
         onTap: (){
           print("On tap");
-            Navigator.pushNamed(context, NewDetailPage.routeName, arguments:{
-              "isTrending": false,
-              "publishedAt": newsModelProvider.publishedAt,
-            });
+          Navigator.pushNamed(context, NewDetailPage.routeName, arguments: news);
         },
         child: Stack(
           children: [

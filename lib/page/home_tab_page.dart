@@ -17,6 +17,7 @@ class HomeTabPage extends StatefulWidget {
 }
 
 class _HomeTabPageState extends State<HomeTabPage> {
+  String sortBy = SortByEnum.publishedAt.name;
   var newsType = NewsType.allNews;
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
         ),
         actions: [
           IconButton(onPressed: (){},
-              icon: Icon(
+              icon: const Icon(
                 IconlyLight.search,
               ))
         ],
@@ -51,7 +52,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
           children: [
             Row(
               children: [
-                Expanded(
+                const Expanded(
                   child: Text("All News",
                   style: TextStyle(
                     fontSize: 20,
@@ -60,11 +61,11 @@ class _HomeTabPageState extends State<HomeTabPage> {
                   ),
                 ),
                 IconButton(onPressed: (){},
-                    icon: Icon(IconlyLight.filter),
+                    icon: const Icon(IconlyLight.filter),
                 ),
               ],
             ),
-            SizedBox(height: 24,),
+            const SizedBox(height: 24,),
             FutureBuilder(
               future: newProvider.fetchAllNews(sortBy: sortBy),
               builder: (context, snapshot) {
@@ -87,8 +88,8 @@ class _HomeTabPageState extends State<HomeTabPage> {
                     ),
                   );
                 }
-                return
-                Expanded(
+                // return Container();
+                return Expanded(
                   child: ListView.builder(
                       itemCount: snapshot.data?.length ?? 0,
                       itemBuilder: (context, index) {
@@ -100,17 +101,9 @@ class _HomeTabPageState extends State<HomeTabPage> {
                 );
               },
             ),
-            // Expanded(
-            //   child: ListView.builder(
-            //       itemCount: 5,
-            //       itemBuilder: (context,index){
-            //         return ArticlesWidget();
-            //   }),
-            // )
           ],
         ),
       ),
     );
   }
 }
-
