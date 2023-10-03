@@ -5,6 +5,7 @@ import 'package:news_app/widget/articles_widget.dart';
 import 'package:news_app/provider/news_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../Utility/utils.dart';
 import '../consts/vars.dart';
 import '../widget/empty_screen.dart';
 import '../widget/loading_widget.dart';
@@ -21,6 +22,8 @@ class _HomeTabPageState extends State<HomeTabPage> {
   var newsType = NewsType.allNews;
   @override
   Widget build(BuildContext context) {
+    Size size = Utils(context).getScreenSize;
+    final Color color = Utils(context).getColor;
     String sortBy = SortByEnum.publishedAt.name;
     final newProvider = Provider.of<NewsProvider>(context);
     return Scaffold(
@@ -70,7 +73,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
               future: newProvider.fetchAllNews(sortBy: sortBy),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return LoadingWidget(newsType: newsType);
+                  return LoadingWidget();
                 }
                 else if (snapshot.hasError) {
                   return Expanded(

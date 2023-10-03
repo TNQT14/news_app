@@ -28,7 +28,7 @@ class _ExplorePageState extends State<ExplorePage> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: color),
-        title: Text("haha",
+        title: Text("Trending",
         style: GoogleFonts.lobster(
           color: color,
           fontSize: 20,
@@ -43,7 +43,7 @@ class _ExplorePageState extends State<ExplorePage> {
           FutureBuilder<List<NewsModel>>(future: newProvider.fetchTopHeadLine(),
             builder: (context,snapshot){
             if(snapshot.connectionState == ConnectionState.waiting){
-              return LoadingWidget(newsType: newsType);
+              return LoadingWidget();
             }
             else
               if(snapshot.hasError)
